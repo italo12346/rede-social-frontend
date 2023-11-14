@@ -3,7 +3,6 @@ import styled from "styled-components/native";
 export const HeaderContainer = styled.View`
   height: 50px;
   padding: 10px;
-  margin-top: 40px;
   background-color: #2e4374;
   justify-content: center;
   align-items: center;
