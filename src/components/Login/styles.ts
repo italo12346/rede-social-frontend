@@ -25,8 +25,8 @@ export const Title = styled.Text`
 `;
 
 export const Input = styled.TextInput`
-  width: 80%;
-  height: 8%;
+  width: 310px;
+  height: 50px;
   background-color: #d9d9d9;
   font-size: 14px;
   color: #fdfcfe;
@@ -36,8 +36,8 @@ export const Input = styled.TextInput`
 `;
 
 export const Button = styled.TouchableOpacity`
-  width: 80%;
-  height: 8%;
+  width: 315px;
+  height: 50px;
   color: #fff;
   background-color: #2e4374;
   justify-content: center;
