@@ -1,0 +1,63 @@
+import styled from "styled-components/native";
+
+export const Container = styled.View`
+  flex: 1;
+  height: 100%;
+  background-color: #0000;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const FormContainer = styled.View`
+  width: 100%;
+  height: 80%;
+  justify-content: center;
+  align-items: center;
+  border-bottom-color: #cecece;
+  border-bottom-width: 2px;
+`;
+
+export const Title = styled.Text`
+  color: #000;
+  font-size: 34px;
+  font-weight: bold;
+  margin-bottom: 20px;
+`;
+
+export const Input = styled.TextInput`
+  width: 80%;
+  height: 8%;
+  background-color: #d9d9d9;
+  font-size: 14px;
+  color: #fdfcfe;
+  padding: 12px;
+  border-radius: 14px;
+  margin-top: 20px;
+`;
+
+export const Button = styled.TouchableOpacity`
+  width: 80%;
+  height: 8%;
+  color: #fff;
+  background-color: #2e4374;
+  justify-content: center;
+  align-items: center;
+  border-radius: 14px;
+  margin-top: 20px;
+`;
+
+export const ButtonText = styled.Text`
+  color: #fff;
+`;
+
+export const SignUpContainer = styled.View`
+  margin-top: 5%;
+  margin-bottom: -40%;
+  height: 20%;
+  width: 100%;
+  align-items: center;
+`;
+
+export const SignUpText = styled.Text`
+  color: blue;
+`;
