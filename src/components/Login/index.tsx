@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TouchableOpacity, Text, Alert } from "react-native";
 import { fazerChamadaAutenticada, fazerLogin } from "../../service/api";
+import { useNavigation } from "@react-navigation/native";
 import {
   Container,
   FormContainer,
@@ -15,6 +16,7 @@ import {
 export function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const navigation = useNavigation();
 
   const handleLogin = async () => {
     try {
@@ -22,9 +24,7 @@ export function Login() {
       console.log(token);
 
       await fazerChamadaAutenticada(token);
-
-      setEmail("");
-      setSenha("");
+      navigation.navigate("home");
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       Alert.alert("Erro", "Falha no login. Verifique suas credenciais.");
