@@ -19,7 +19,9 @@ export function Registro() {
 
     const onSubmit = (data: FormData) => {
         try {
-          fazerRegistro(data.email, senha, data.name, data.username);
+          fazerRegistro(data.email, senha, data.name, data.username).then(()=>{
+            navigation.navigate("login");
+          })
         } catch (error) {
           // Trate os erros aqui, se necessário
           console.error(error);
