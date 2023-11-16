@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Text, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { FormContainer, Container, Title, Input, Button, ButtonText, SignUpText } from "./styles";
+import { fazerRegistro } from "../../service/api";
 
 interface FormData {
     name: string;
@@ -12,13 +14,20 @@ interface FormData {
 export function Registro() {
     const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
     const [senha, setSenha] = useState('')
+    const navigation = useNavigation();
+
 
     const onSubmit = (data: FormData) => {
-        // Handle your form submission here
-        console.log(data);
-    };
+        try {
+          fazerRegistro(data.email, senha, data.name, data.username);
+        } catch (error) {
+          // Trate os erros aqui, se necessário
+          console.error(error);
+        }
+      };
+      
     const singIn = ()=> {
-        console.log("ok");
+        navigation.navigate("login");
         
     }
 

@@ -30,6 +30,10 @@ export function Login() {
       Alert.alert("Erro", "Falha no login. Verifique suas credenciais.");
     }
   };
+  const singUp = ()=> {
+    navigation.navigate("registro");
+    
+}
 
   return (
     <Container>
@@ -53,7 +57,7 @@ export function Login() {
         </Button>
       </FormContainer>
       <SignUpContainer>
-        <TouchableOpacity onPress={handleLogin}>
+        <TouchableOpacity onPress={singUp}>
           <Text>
             Não tem uma conta?
             <SignUpText>Sing-Up!</SignUpText>
