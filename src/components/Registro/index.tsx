@@ -2,35 +2,34 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { FormContainer, Container, Title, Input, Button, ButtonText, SignUpText } from "./styles";
+import { FormContainer, Container, Title, Button, ButtonText, SignUpText, ErroText, Input } from "./styles";
 import { fazerRegistro } from "../../service/api";
-
 interface FormData {
     name: string;
     username: string;
     email: string;
+    senha: string;
 }
 
 export function Registro() {
     const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
-    const [senha, setSenha] = useState('')
     const navigation = useNavigation();
 
 
     const onSubmit = (data: FormData) => {
         try {
-          fazerRegistro(data.email, senha, data.name, data.username).then(()=>{
-            navigation.navigate("login");
-          })
+            fazerRegistro(data.email, data.senha, data.name, data.username).then(() => {
+                navigation.navigate("login");
+            })
         } catch (error) {
-          // Trate os erros aqui, se necessário
-          console.error(error);
+            // Trate os erros aqui, se necessário
+            console.error(error);
         }
-      };
-      
-    const singIn = ()=> {
+    };
+
+    const singIn = () => {
         navigation.navigate("login");
-        
+
     }
 
     return (
@@ -48,9 +47,9 @@ export function Registro() {
                         />
                     )}
                     name="name"
-                    rules={{ required: 'Name is required' }}
+                    rules={{ required: 'Insira um nome valido' }}
                 />
-                {errors.name && <Text>{errors.name.message}</Text>}
+                {errors.name && <ErroText>{errors.name.message}</ErroText>}
 
                 <Controller
                     control={control}
@@ -63,9 +62,9 @@ export function Registro() {
                         />
                     )}
                     name="username"
-                    rules={{ required: 'Username is required' }}
+                    rules={{ required: 'Insira um Username valido' }}
                 />
-                {errors.username && <Text>{errors.username.message}</Text>}
+                {errors.username && <ErroText>{errors.username.message}</ErroText>}
 
                 <Controller
                     control={control}
@@ -75,21 +74,38 @@ export function Registro() {
                             placeholder="E-mail"
                             value={field.value}
                             onChangeText={(text) => field.onChange(text)}
+                            autoCapitalize="none"
                         />
                     )}
                     name="email"
-                    rules={{ required: 'E-mail é obrigatório', pattern: /^\S+@\S+$/i }}
+                    rules={{
+                        required: 'E-mail é obrigatório', pattern: {
+                            message: "Email Invalido",
+                            value: /^\S+@\S+$/i
+                        }
+                    }}
                 />
-                {errors.email && <Text>{errors.email.message}</Text>}
+                {errors.email && <ErroText>{errors.email.message}</ErroText>}
 
-                <Input
-                    placeholder="Senha"
-                    placeholderTextColor="#fdfcfe"
-                    secureTextEntry
-                    value={senha}
-                    onChangeText={(text) => setSenha(text)}
+                <Controller
+                    control={control}
+                    render={({ field }) => (
+                        <Input
+                            placeholderTextColor="#fdfcfe"
+                            placeholder="Senha"
+                            value={field.value}
+                            onChangeText={(text) => field.onChange(text)}
+                            autoCapitalize="none"
+                            secureTextEntry
+                        />
+                    )}
+                    name="senha"
+                    rules={{
+                        required: 'Senha muito curta',
+                        minLength: 3
+                    }}
                 />
-
+                {errors.senha && <ErroText>{errors.senha.message}</ErroText>}
                 <Button onPress={handleSubmit(onSubmit)} >
                     <ButtonText>Registrar</ButtonText>
                 </Button>
@@ -99,7 +115,7 @@ export function Registro() {
                     Já tem uma conta?
                     <SignUpText>Sing-In!</SignUpText>
                 </Text>
-                </TouchableOpacity>
+            </TouchableOpacity>
         </Container>
     );
 }

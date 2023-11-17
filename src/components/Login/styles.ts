@@ -20,7 +20,7 @@ export const FormContainer = styled.View`
 export const Title = styled.Text`
   color: #000;
   font-size: 34px;
-  font-weight: bold;
+  font-weight: semibold;
   margin-bottom: 20px;
 `;
 
@@ -61,3 +61,8 @@ export const SignUpContainer = styled.View`
 export const SignUpText = styled.Text`
   color: blue;
 `;
+
+export const ErroText = styled.Text`
+  color: red;
+`;
+
