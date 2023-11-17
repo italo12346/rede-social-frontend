@@ -60,3 +60,7 @@ export const SignUpContainer = styled.View`
 export const SignUpText = styled.Text`
   color: blue;
 `;
+
+export const ErroText = styled.Text`
+  color: red;
+`;

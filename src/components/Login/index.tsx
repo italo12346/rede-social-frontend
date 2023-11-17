@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity, Text, Alert } from "react-native";
+import { useForm, Controller } from "react-hook-form";
 import { fazerChamadaAutenticada, fazerLogin } from "../../service/api";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -11,16 +12,21 @@ import {
   ButtonText,
   SignUpContainer,
   SignUpText,
+  ErroText,
 } from "./styles";
 
+interface FormData {
+  email: string;
+  senha: string;
+}
+
 export function Login() {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
   const navigation = useNavigation();
 
-  const handleLogin = async () => {
+  const handleLogin = async (data:FormData) => {
     try {
-      const token = await fazerLogin(email, senha);
+      const token = await fazerLogin(data.email, data.senha);
       console.log(token);
 
       await fazerChamadaAutenticada(token);
@@ -39,20 +45,48 @@ export function Login() {
     <Container>
       <FormContainer>
         <Title>LensLink</Title>
-        <Input
-          placeholder="E-mail"
-          placeholderTextColor="#fdfcfe"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <Input
-          placeholder="Senha"
-          placeholderTextColor="#fdfcfe"
-          secureTextEntry
-          value={senha}
-          onChangeText={(text) => setSenha(text)}
-        />
-        <Button onPress={handleLogin}>
+        <Controller
+                    control={control}
+                    render={({ field }) => (
+                        <Input
+                            placeholderTextColor="#fdfcfe"
+                            placeholder="E-mail"
+                            value={field.value}
+                            onChangeText={(text) => field.onChange(text)}
+                            autoCapitalize="none"
+                        />
+                    )}
+                    name="email"
+                    rules={{
+                        required: 'E-mail é obrigatório', pattern: {
+                            message: "Email Invalido",
+                            value: /^\S+@\S+$/i
+                        }
+                    }}
+                />
+                {errors.email && <ErroText>{errors.email.message}</ErroText>}
+
+                <Controller
+                    control={control}
+                    render={({ field }) => (
+                        <Input
+                            placeholderTextColor="#fdfcfe"
+                            placeholder="Senha"
+                            value={field.value}
+                            onChangeText={(text) => field.onChange(text)}
+                            autoCapitalize="none"
+                            secureTextEntry
+                        />
+                    )}
+                    name="senha"
+                    rules={{
+                        required: 'Senha muito curta',
+                        minLength: 3
+                    }}
+                />
+                {errors.senha && <ErroText>{errors.senha.message}</ErroText>}
+
+        <Button onPress={handleSubmit(handleLogin)}>
           <ButtonText>Login</ButtonText>
         </Button>
       </FormContainer>
