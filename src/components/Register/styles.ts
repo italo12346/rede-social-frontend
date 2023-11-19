@@ -1,11 +1,12 @@
 import styled from "styled-components/native";
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
   flex: 1;
   height: 100%;
   background-color: #0000;
   justify-content: center;
   align-items: center;
+  position:relative;
 `;
 export const Title = styled.Text`
   color: #000;
@@ -51,10 +52,9 @@ export const ButtonText = styled.Text`
 
 export const SignUpContainer = styled.View`
   margin-top: 5%;
-  margin-bottom: -40%;
-  height: 20%;
+  margin-bottom: -18%;
   width: 100%;
-  align-items: center;
+  overflow:hiddem;
 `;
 
 export const SignUpText = styled.Text`

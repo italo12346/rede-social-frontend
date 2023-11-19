@@ -5,7 +5,7 @@ const { Screen, Navigator } = createNativeStackNavigator();
 import { LoginScreen } from "../screens/LoginScreen";
 import { HomeScreen } from "../screens/HomeScreen";
 import React from "react";
-import RegistroScreen from "../screens/RegistroScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 
 export function StackRoutes() {
   return (
@@ -26,7 +26,7 @@ export function StackRoutes() {
       />
       <Screen
         name="registro"
-        component={RegistroScreen}
+        component={RegisterScreen}
         options={{
           headerShown: false,
         }}

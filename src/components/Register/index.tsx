@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { FormContainer, Container, Title, Button, ButtonText, SignUpText, ErroText, Input } from "./styles";
+import { FormContainer, Container, Title, Button, ButtonText, SignUpText, ErroText, Input, SignUpContainer } from "./styles";
 import { fazerRegistro } from "../../service/api";
 interface FormData {
     name: string;
@@ -111,10 +111,12 @@ export function Registro() {
                 </Button>
             </FormContainer>
             <TouchableOpacity onPress={singIn}>
-                <Text>
-                    Já tem uma conta?
-                    <SignUpText>Sing-In!</SignUpText>
-                </Text>
+                <SignUpContainer>
+                    <Text>
+                        Já tem uma conta?
+                        <SignUpText>Sing-In!</SignUpText>
+                    </Text>
+                </SignUpContainer>
             </TouchableOpacity>
         </Container>
     );
