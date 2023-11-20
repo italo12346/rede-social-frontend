@@ -31,6 +31,8 @@ export function Login() {
 
       await fazerChamadaAutenticada(token);
       navigation.navigate("home");
+      console.log("Logado com sucesso");
+      
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       Alert.alert("Erro", "Falha no login. Verifique suas credenciais.");

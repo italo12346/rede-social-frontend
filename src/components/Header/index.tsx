@@ -1,10 +1,14 @@
 import React from "react";
 import { HeaderContainer, HeaderText } from "./styles";
 
-export function Header() {
+interface HeaderProps {
+  title: string;
+}
+
+export function Header(props: HeaderProps) {
   return (
     <HeaderContainer>
-      <HeaderText>LensLink</HeaderText>
+      <HeaderText>{props.title}</HeaderText>
     </HeaderContainer>
   );
 }

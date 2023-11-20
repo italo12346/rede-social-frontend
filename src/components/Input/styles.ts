@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-export const Input = styled.TextInput`
+export const InputComponent = styled.TextInput`
   width: 310px;
   height: 50px;
   background-color: #d9d9d9;

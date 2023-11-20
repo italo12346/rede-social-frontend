@@ -5,7 +5,8 @@ const { Screen, Navigator } = createNativeStackNavigator();
 import { LoginScreen } from "../screens/LoginScreen";
 import { HomeScreen } from "../screens/HomeScreen";
 import React from "react";
-import RegistroScreen from "../screens/RegistroScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+import TabRoutes from "./tab-routes";
 
 export function StackRoutes() {
   return (
@@ -19,18 +20,19 @@ export function StackRoutes() {
       />
       <Screen
         name="home"
-        component={HomeScreen}
+        component={TabRoutes}
         options={{
           headerShown: false,
         }}
       />
       <Screen
         name="registro"
-        component={RegistroScreen}
+        component={RegisterScreen}
         options={{
           headerShown: false,
         }}
       />
+
     </Navigator>
   );
 }

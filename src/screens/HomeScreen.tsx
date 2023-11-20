@@ -6,8 +6,8 @@ import { StatusBar } from "react-native";
 export function HomeScreen() {
   return (
     <>
-      <StatusBar barStyle={"dark-content"} backgroundColor={"#2e4374"} />
-      <Header />
+      <StatusBar barStyle={"light-content"} backgroundColor={"#2e4374"} />
+      <Header title = "LeansLink"/>
     </>
   );
 }
