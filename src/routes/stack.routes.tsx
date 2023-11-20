@@ -6,6 +6,7 @@ import { LoginScreen } from "../screens/LoginScreen";
 import { HomeScreen } from "../screens/HomeScreen";
 import React from "react";
 import RegisterScreen from "../screens/RegisterScreen";
+import TabRoutes from "./tab-routes";
 
 export function StackRoutes() {
   return (
@@ -19,7 +20,7 @@ export function StackRoutes() {
       />
       <Screen
         name="home"
-        component={HomeScreen}
+        component={TabRoutes}
         options={{
           headerShown: false,
         }}
@@ -31,6 +32,7 @@ export function StackRoutes() {
           headerShown: false,
         }}
       />
+
     </Navigator>
   );
 }

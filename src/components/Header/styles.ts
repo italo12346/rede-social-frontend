@@ -13,4 +13,5 @@ export const HeaderContainer = styled.View`
 export const HeaderText = styled.Text`
   font-size: 20px;
   font-weight: bold;
+  color:#ffff;
 `;

@@ -7,6 +7,7 @@ export function CreatePublish() {
   return (
     <>
       <StatusBar barStyle={"light-content"} backgroundColor={"#2e4374"} />
+      <Header title = "Criar nova publicação"/>
     </>
   );
 }

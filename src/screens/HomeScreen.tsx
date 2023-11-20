@@ -7,7 +7,7 @@ export function HomeScreen() {
   return (
     <>
       <StatusBar barStyle={"light-content"} backgroundColor={"#2e4374"} />
-      <Header />
+      <Header title = "LeansLink"/>
     </>
   );
 }

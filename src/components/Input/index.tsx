@@ -1,13 +1,13 @@
-// import { Feather } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
-// import {InputComponent} from "./styles"
-// import React from 'react';
+import { InputComponent } from "./styles"
+import React from 'react';
 
-// export function Input() {
+export default function Input() {
 
-//   return (
-//     <InputComponent>
-//     <Feather name='home'></Feather>
-//     </InputComponent>
-//   );
-// }
+    return (
+        <InputComponent>
+            
+        </InputComponent>
+    );
+}
