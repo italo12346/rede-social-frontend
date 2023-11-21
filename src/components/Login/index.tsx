@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { fazerChamadaAutenticada, fazerLogin } from "../../service/api";
 import { useNavigation } from "@react-navigation/native";
+import {  useFonts, Itim_400Regular } from '@expo-google-fonts/itim';
 import {
   Container,
   FormContainer,
@@ -23,6 +24,14 @@ interface FormData {
 export function Login() {
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
   const navigation = useNavigation();
+  
+  let [fontsLoaded] = useFonts({
+    Itim_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const handleLogin = async (data:FormData) => {
     try {

@@ -11,7 +11,7 @@ export const HeaderContainer = styled.View`
 `;
 
 export const HeaderText = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 25px;
+  font-family:Itim_400Regular;
   color:#ffff;
 `;
