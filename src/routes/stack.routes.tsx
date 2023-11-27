@@ -32,7 +32,6 @@ export function StackRoutes() {
           headerShown: false,
         }}
       />
-
     </Navigator>
   );
 }
