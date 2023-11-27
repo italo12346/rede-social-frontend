@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 const BASE_URL = "https://lenslink.onrender.com";
 
 interface RegistroResponse {
@@ -32,8 +33,6 @@ export const fazerLogin = async (email: string, senha: string) => {
   }
 };
 
-import axios from "axios";
-
 export const fazerChamadaAutenticada = async (
   rota: string,
   metodo = "GET",
@@ -57,7 +56,6 @@ export const fazerChamadaAutenticada = async (
 
     return response.data;
   } catch (erro) {
-    // Lidar com erros de autenticação, como token expirado
     console.error("Erro na chamada autenticada:", erro);
     throw erro;
   }
@@ -83,19 +81,18 @@ export const fazerRegistro = async (
       }),
     });
 
-    console.log("Response status:", response.status); // Adicione este log
+    console.log("Response status:", response.status);
 
     if (!response.ok) {
-      console.log("Response body:", await response.text()); // Adicione este log
+      console.log("Response body:", await response.text());
       throw new Error("Erro no registro do usuário");
     }
 
     const data: RegistroResponse = await response.json();
 
-    // Se necessário, você pode retornar algo útil da resposta do servidor
     return data;
   } catch (error) {
-    console.error(error); // Log do erro
+    console.error(error);
     throw error;
   }
 };
