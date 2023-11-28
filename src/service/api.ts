@@ -1,8 +1,9 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 const BASE_URL = "https://lenslink.onrender.com";
 
 interface RegistroResponse {
   message: string;
-  // Outros campos, se houver
 }
 
 export const fazerLogin = async (email: string, senha: string) => {
@@ -27,32 +28,45 @@ export const fazerLogin = async (email: string, senha: string) => {
 
     return token;
   } catch (error) {
-    console.error(error); // Log do erro
+    console.error(error);
     throw error;
   }
 };
 
-export const fazerChamadaAutenticada = async (token: string) => {
+export const fazerChamadaAutenticada = async (
+  rota: string,
+  metodo = "GET",
+  dados = {}
+) => {
+  const token = await AsyncStorage.getItem("authToken");
+
+  if (!token) {
+    return null;
+  }
+
   try {
-    const response = await fetch(`${BASE_URL}/foto/list`, {
+    const response = await axios({
+      method: metodo,
+      url: `${BASE_URL}/${rota}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      data: dados,
     });
 
-    if (!response.ok) {
-      throw new Error("Erro na chamada autenticada");
-    }
-
-    const data = await response.json();
-
-    console.log(data);
-  } catch (error) {
-    console.error(error); // Log do erro
-    throw error;
+    return response.data;
+  } catch (erro) {
+    console.error("Erro na chamada autenticada:", erro);
+    throw erro;
   }
 };
-export const fazerRegistro = async (email: string, senha: string, nome: string, usuario: string): Promise<RegistroResponse> => {
+
+export const fazerRegistro = async (
+  email: string,
+  senha: string,
+  nome: string,
+  usuario: string
+): Promise<RegistroResponse> => {
   try {
     const response = await fetch(`${BASE_URL}/user/create`, {
       method: "POST",
@@ -67,19 +81,18 @@ export const fazerRegistro = async (email: string, senha: string, nome: string, 
       }),
     });
 
-    console.log('Response status:', response.status); // Adicione este log
+    console.log("Response status:", response.status);
 
     if (!response.ok) {
-      console.log('Response body:', await response.text()); // Adicione este log
+      console.log("Response body:", await response.text());
       throw new Error("Erro no registro do usuário");
     }
 
     const data: RegistroResponse = await response.json();
 
-    // Se necessário, você pode retornar algo útil da resposta do servidor
     return data;
   } catch (error) {
-    console.error(error); // Log do erro
+    console.error(error);
     throw error;
   }
 };
