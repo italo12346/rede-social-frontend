@@ -32,7 +32,8 @@ export function Login() {
   const handleLogin = async (data: FormData) => {
     try {
       const token = await fazerLogin(data.email, data.senha);
-      await AsyncStorage.setItem("authToken", token);
+      await AsyncStorage.setItem("authToken", token.token);
+      await AsyncStorage.setItem("userId", token.userId);
       navigation.navigate("home");
     } catch (error) {
       console.error("Erro ao fazer login:", error);
