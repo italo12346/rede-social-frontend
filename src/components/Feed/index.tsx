@@ -1,7 +1,18 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Alert, FlatList, RefreshControl } from "react-native";
 import { fazerChamadaAutenticada } from "../../service/api";
-import { Post, Header, Avatar, Name, PostImage, Description } from "./styles";
+import {
+  Post,
+  Header,
+  Avatar,
+  Name,
+  PostImage,
+  Description,
+  Ellipse,
+  Icons,
+} from "./styles";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 export const Feed = () => {
   const [dados, setDados] = useState(null);
@@ -43,12 +54,18 @@ export const Feed = () => {
                 }}
               />
               <Name>{item.autor.usuario}</Name>
+              <Ellipse>
+                <FontAwesome5 name="ellipsis-v" size={24} color="black" />
+              </Ellipse>
             </Header>
 
             <PostImage
               source={{ uri: `data:image/jpeg;base64,${item.imagem}` }}
             />
-
+            <Icons>
+              <Ionicons name="ios-heart-outline" size={24} color="black" />
+              <Ionicons name="md-chatbubble-outline" size={24} color="black" />
+            </Icons>
             <Description>
               <Name>{item.autor.usuario}</Name> {item.descricao}
             </Description>
