@@ -6,6 +6,7 @@ export const Container = styled.SafeAreaView`
   background-color: #0000;
   justify-content: center;
   align-items: center;
+  overflow:hidden;
 `;
 
 export const FormContainer = styled.View`
