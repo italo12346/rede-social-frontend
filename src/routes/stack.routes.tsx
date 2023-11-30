@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const { Screen, Navigator } = createNativeStackNavigator();
 
 import { LoginScreen } from "../screens/LoginScreen";
+import { HomeScreen } from "../screens/HomeScreen";
 import React from "react";
 import RegisterScreen from "../screens/RegisterScreen";
 import TabRoutes from "./tab-routes";

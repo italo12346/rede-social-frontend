@@ -122,30 +122,31 @@ export const fazerRegistro = async (
   }
 };
 
-export const postarFoto = async (descricao:string, imagem:string) => {
+export const postarFoto = async (descricao: string, imagem: string) => {
+  const token = await AsyncStorage.getItem("authToken");
   try {
+    const formData = new FormData();
+    formData.append('descricao', descricao);
+    formData.append('imagem', imagem);
+
     const response = await fetch(`${BASE_URL}/foto/create`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        // Aqui você pode incluir cabeçalhos de autenticação, se necessário
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        descricao: descricao,
-        imagem: imagem,
-      }),
+      body: formData,
     });
 
     if (!response.ok) {
+      console.log(response);
+      
       throw new Error("Erro ao postar a foto");
     }
 
     const data = await response.json();
-    // Se houver alguma informação adicional na resposta que você precisa, você pode lidar com isso aqui.
-
-    return data; // Você pode retornar qualquer dado útil aqui, dependendo da sua necessidade.
+    return data;
   } catch (error) {
-    console.error(error); // Log do erro
+    console.error(error);
     throw error;
   }
 };

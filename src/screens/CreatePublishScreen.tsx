@@ -1,7 +1,8 @@
 import React from "react";
 import { Header } from "../components/Header";
 import { StatusBar, View } from "react-native";
-import CreatePublish from "../components/CreatePublish"
+import CreatePublish from "../components/CreatePublish";
+
 
 export function CreatePublishScreen() {
   return (

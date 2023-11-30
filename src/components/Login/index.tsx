@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { TouchableOpacity, Text, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { fazerChamadaAutenticada, fazerLogin } from "../../service/api";
+import { fazerLogin } from "../../service/api";
 import { useNavigation } from "@react-navigation/native";
-import {  useFonts, Itim_400Regular } from '@expo-google-fonts/itim';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Container,
   FormContainer,
@@ -22,80 +22,73 @@ interface FormData {
 }
 
 export function Login() {
-  const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
   const navigation = useNavigation();
-  
-  let [fontsLoaded] = useFonts({
-    Itim_400Regular,
-  });
 
-  if (!fontsLoaded) {
-    return null;
-  }
-
-  const handleLogin = async (data:FormData) => {
+  const handleLogin = async (data: FormData) => {
     try {
       const token = await fazerLogin(data.email, data.senha);
-      console.log(token);
-
-      await fazerChamadaAutenticada(token);
+      await AsyncStorage.setItem("authToken", token.token);
+      await AsyncStorage.setItem("userId", token.userId);
       navigation.navigate("home");
-      console.log("Logado com sucesso");
-      
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       Alert.alert("Erro", "Falha no login. Verifique suas credenciais.");
     }
   };
-  const singUp = ()=> {
+  const singUp = () => {
     navigation.navigate("registro");
-    
-}
+  };
 
   return (
     <Container>
       <FormContainer>
         <Title>LensLink</Title>
         <Controller
-                    control={control}
-                    render={({ field }) => (
-                        <Input
-                            placeholderTextColor="#fdfcfe"
-                            placeholder="E-mail"
-                            value={field.value}
-                            onChangeText={(text) => field.onChange(text)}
-                            autoCapitalize="none"
-                        />
-                    )}
-                    name="email"
-                    rules={{
-                        required: 'E-mail é obrigatório', pattern: {
-                            message: "Email Invalido",
-                            value: /^\S+@\S+$/i
-                        }
-                    }}
-                />
-                {errors.email && <ErroText>{errors.email.message}</ErroText>}
+          control={control}
+          render={({ field }) => (
+            <Input
+              placeholderTextColor="#fdfcfe"
+              placeholder="E-mail"
+              value={field.value}
+              onChangeText={(text) => field.onChange(text)}
+              autoCapitalize="none"
+            />
+          )}
+          name="email"
+          rules={{
+            required: "E-mail é obrigatório",
+            pattern: {
+              message: "Email Invalido",
+              value: /^\S+@\S+$/i,
+            },
+          }}
+        />
+        {errors.email && <ErroText>{errors.email.message}</ErroText>}
 
-                <Controller
-                    control={control}
-                    render={({ field }) => (
-                        <Input
-                            placeholderTextColor="#fdfcfe"
-                            placeholder="Senha"
-                            value={field.value}
-                            onChangeText={(text) => field.onChange(text)}
-                            autoCapitalize="none"
-                            secureTextEntry
-                        />
-                    )}
-                    name="senha"
-                    rules={{
-                        required: 'Senha muito curta',
-                        minLength: 3
-                    }}
-                />
-                {errors.senha && <ErroText>{errors.senha.message}</ErroText>}
+        <Controller
+          control={control}
+          render={({ field }) => (
+            <Input
+              placeholderTextColor="#fdfcfe"
+              placeholder="Senha"
+              value={field.value}
+              onChangeText={(text) => field.onChange(text)}
+              autoCapitalize="none"
+              secureTextEntry
+            />
+          )}
+          name="senha"
+          rules={{
+            required: "Senha muito curta",
+            minLength: 3,
+          }}
+        />
+        {errors.senha && <ErroText>{errors.senha.message}</ErroText>}
 
         <Button onPress={handleSubmit(handleLogin)}>
           <ButtonText>Login</ButtonText>
