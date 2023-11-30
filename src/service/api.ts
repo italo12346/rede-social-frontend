@@ -25,8 +25,9 @@ export const fazerLogin = async (email: string, senha: string) => {
 
     const data = await response.json();
     const token = data.token;
+    const userId = data.userId;
 
-    return token;
+    return { token, userId };
   } catch (error) {
     console.error(error);
     throw error;
@@ -48,6 +49,30 @@ export const fazerChamadaAutenticada = async (
     const response = await axios({
       method: metodo,
       url: `${BASE_URL}/${rota}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: dados,
+    });
+
+    return response.data;
+  } catch (erro) {
+    console.error("Erro na chamada autenticada:", erro);
+    throw erro;
+  }
+};
+
+export const profile = async (rota: string, metodo = "GET", dados = {}) => {
+  const token = await AsyncStorage.getItem("authToken");
+  const userId = await AsyncStorage.getItem("userId");
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const response = await axios({
+      method: metodo,
+      url: `${BASE_URL}/${rota}/${userId}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
