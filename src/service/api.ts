@@ -78,7 +78,7 @@ export const profile = async (rota: string, metodo = "GET", dados = {}) => {
       },
       data: dados,
     });
-    console.log(response.data);
+
     return response.data;
   } catch (erro) {
     console.error("Erro na chamada autenticada:", erro);
