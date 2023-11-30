@@ -121,3 +121,32 @@ export const fazerRegistro = async (
     throw error;
   }
 };
+
+export const postarFoto = async (descricao: string, imagem: string) => {
+  const token = await AsyncStorage.getItem("authToken");
+  try {
+    const formData = new FormData();
+    formData.append('descricao', descricao);
+    formData.append('imagem', imagem);
+
+    const response = await fetch(`${BASE_URL}/foto/create`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      console.log(response);
+      
+      throw new Error("Erro ao postar a foto");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

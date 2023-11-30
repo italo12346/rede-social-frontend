@@ -2,8 +2,8 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
-import CreatePublish from "../screens/CreatePublish";
 import ProfileScreen from "../screens/ProfileScreen";
+import CreatePublish from "../components/CreatePublish";
 
 const Tab = createBottomTabNavigator();
 
