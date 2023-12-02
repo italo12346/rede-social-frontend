@@ -25,9 +25,19 @@ export const Name = styled.Text`
   font-size: 14px;
 `;
 
-export const Info = styled.Text`
-  color: #333;
+export const Info = styled.View`
+  width: 150px;
+  align-items: center;
+`;
+
+export const EditBottom = styled.Text`
+  background: #e1e1e1;
+  width: 150px;
+  border-radius: 5px;
   font-weight: bold;
-  font-size: 17px;
   margin-left: 20px;
+  font-size: 14px;
+  text-align: center;
+  padding: 5px;
+  margin-top: 8px;
 `;

@@ -1,7 +1,21 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { View, Alert, FlatList, RefreshControl } from "react-native";
+import {
+  View,
+  Text,
+  Alert,
+  FlatList,
+  RefreshControl,
+  TouchableOpacity,
+} from "react-native";
 import { profile } from "../../service/api";
-import { ProfileContainer, Header, Avatar, Name, Info } from "./styles";
+import {
+  ProfileContainer,
+  Header,
+  Avatar,
+  Name,
+  Info,
+  EditBottom,
+} from "./styles";
 
 export const Profile = () => {
   const [dados, setDados] = useState<any[] | null>(null);
@@ -42,9 +56,15 @@ export const Profile = () => {
                   uri: `data:image/jpeg;base64,${item.fotoPerfil}`,
                 }}
               />
-              <Info>{item.publicacoes} Publicações</Info>
+              <Info>
+                <Name>{item.publicacoes}</Name>
+                <Name>Publicações</Name>
+              </Info>
             </Header>
             <Name>{item.usuario}</Name>
+            <TouchableOpacity>
+              <EditBottom>Editar perfil</EditBottom>
+            </TouchableOpacity>
           </ProfileContainer>
         )}
         refreshControl={
