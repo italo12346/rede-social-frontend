@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -22,6 +23,8 @@ export const Profile = () => {
 
   const [refreshing, setRefreshing] = useState(false);
 
+  const navigation = useNavigation();
+
   const carregarDados = useCallback(async () => {
     try {
       const dadosRecebidos = await profile("user");
@@ -37,6 +40,10 @@ export const Profile = () => {
   const onRefresh = () => {
     setRefreshing(true);
     carregarDados();
+  };
+
+  const edit = () => {
+    navigation.navigate("editprofile");
   };
 
   useEffect(() => {
@@ -62,7 +69,7 @@ export const Profile = () => {
               </Info>
             </Header>
             <Name>{item.usuario}</Name>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={edit}>
               <EditBottom>Editar perfil</EditBottom>
             </TouchableOpacity>
           </ProfileContainer>

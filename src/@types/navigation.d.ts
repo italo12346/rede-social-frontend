@@ -5,6 +5,7 @@ export declare global {
       home: undefined;
       registro: undefined;
       profile: undefined;
+      editprofile: undefined;
     }
   }
 }

@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { View, Alert, FlatList, RefreshControl } from "react-native";
+import {
+  View,
+  Alert,
+  FlatList,
+  RefreshControl,
+  TouchableOpacity,
+} from "react-native";
 import { fazerChamadaAutenticada } from "../../service/api";
 import {
   Post,
@@ -55,7 +61,9 @@ export const Feed = () => {
               />
               <Name>{item.autor.usuario}</Name>
               <Ellipse>
-                <FontAwesome5 name="ellipsis-v" size={24} color="black" />
+                <TouchableOpacity>
+                  <FontAwesome5 name="ellipsis-v" size={24} color="black" />
+                </TouchableOpacity>
               </Ellipse>
             </Header>
 

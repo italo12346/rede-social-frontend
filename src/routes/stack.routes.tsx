@@ -7,6 +7,7 @@ import { HomeScreen } from "../screens/HomeScreen";
 import React from "react";
 import RegisterScreen from "../screens/RegisterScreen";
 import TabRoutes from "./tab-routes";
+import EditProfileScreen from "../screens/EditProfileScreen";
 
 export function StackRoutes() {
   return (
@@ -28,6 +29,13 @@ export function StackRoutes() {
       <Screen
         name="registro"
         component={RegisterScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Screen
+        name="editprofile"
+        component={EditProfileScreen}
         options={{
           headerShown: false,
         }}
