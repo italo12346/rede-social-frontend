@@ -86,6 +86,30 @@ export const profile = async (rota: string, metodo = "GET", dados = {}) => {
   }
 };
 
+export const editProfile = async (rota: string, metodo = "PUT", dados = {}) => {
+  const token = await AsyncStorage.getItem("authToken");
+  const userId = await AsyncStorage.getItem("userId");
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const response = await axios({
+      method: metodo,
+      url: `${BASE_URL}/${rota}/${userId}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: dados,
+    });
+
+    return response.data;
+  } catch (erro) {
+    console.error("Erro na chamada autenticada:", erro);
+    throw erro;
+  }
+};
+
 export const fazerRegistro = async (
   email: string,
   senha: string,
@@ -126,8 +150,8 @@ export const postarFoto = async (descricao: string, imagem: string) => {
   const token = await AsyncStorage.getItem("authToken");
   try {
     const formData = new FormData();
-    formData.append('descricao', descricao);
-    formData.append('imagem', imagem);
+    formData.append("descricao", descricao);
+    formData.append("imagem", imagem);
 
     const response = await fetch(`${BASE_URL}/foto/create`, {
       method: "POST",
@@ -139,7 +163,7 @@ export const postarFoto = async (descricao: string, imagem: string) => {
 
     if (!response.ok) {
       console.log(response);
-      
+
       throw new Error("Erro ao postar a foto");
     }
 
