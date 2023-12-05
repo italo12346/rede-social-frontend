@@ -86,19 +86,21 @@ export const profile = async (rota: string, metodo = "GET", dados = {}) => {
   }
 };
 
-export const editProfile = async (rota: string, metodo = "PUT", dados = {}) => {
+export const editProfile = async (rota: string, dados: any) => {
   const token = await AsyncStorage.getItem("authToken");
   const userId = await AsyncStorage.getItem("userId");
+
   if (!token) {
     return null;
   }
 
   try {
     const response = await axios({
-      method: metodo,
+      method: "PUT",
       url: `${BASE_URL}/${rota}/${userId}`,
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       },
       data: dados,
     });

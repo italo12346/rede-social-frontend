@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Text, TouchableOpacity, Image, TextInput, View } from "react-native";
+import { Text, TouchableOpacity, ToastAndroid, Alert } from "react-native";
 import { editProfile, profile } from "../../service/api";
 import { useColorScheme } from "react-native";
-
+import * as ImagePicker from "expo-image-picker";
 import { Header, Body, Container, Avatar, Input } from "./styles";
 
 export const EditProfile = () => {
@@ -34,10 +34,9 @@ export const EditProfile = () => {
       const dadosAtualizados = {
         nome,
         usuario,
-        fotoPerfil,
       };
 
-      await editProfile("user", "PUT", dadosAtualizados);
+      await editProfile("user", dadosAtualizados);
 
       navigation.goBack();
     } catch (error) {
@@ -45,6 +44,46 @@ export const EditProfile = () => {
     }
   };
 
+  const handlePickerImage = async () => {
+    const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!granted) {
+      Alert.alert(
+        "Permissão necessária",
+        "Permita que sua aplicação acesse as imagens"
+      );
+    } else {
+      const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        base64: false,
+        aspect: [4, 4],
+        quality: 1,
+      });
+
+      if (canceled) {
+        ToastAndroid.show("Operação cancelada", ToastAndroid.SHORT);
+      } else {
+        const filename = assets[0].uri.substring(
+          assets[0].uri.lastIndexOf("/") + 1,
+          assets[0].uri.length
+        );
+        const extend = filename.split(".")[1];
+        const formData = new FormData();
+        formData.append(
+          "fotoPerfil",
+          JSON.parse(
+            JSON.stringify({
+              name: filename,
+              uri: assets[0].uri,
+              type: `image/${extend}`,
+            })
+          )
+        );
+
+        await editProfile("user", formData);
+      }
+    }
+  };
   return (
     <Container>
       <Header>
@@ -66,7 +105,7 @@ export const EditProfile = () => {
           <Text>Selecione uma foto de perfil</Text>
         )}
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handlePickerImage}>
           <Text style={{ color: "#2e4374" }}>Escolher Foto</Text>
         </TouchableOpacity>
 
