@@ -1,33 +1,48 @@
 import styled from "styled-components/native";
 
 export const ProfileContainer = styled.View`
-  margin-top: 10px;
+  width: 100%;
+  height: 100%;
 `;
 
 export const Header = styled.View`
-  padding: 20px;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  padding: 10px;
 `;
-
 export const Avatar = styled.Image`
   width: 90px;
   height: 90px;
   border-radius: 45px;
   border-width: 3px;
   border-color: #fff;
-  margin-right: 20px;
+  margin-left: 39%;
 `;
 export const Name = styled.Text`
   color: #333;
   font-weight: bold;
-  margin-left: 20px;
-  font-size: 14px;
+  font-size: 17px;
+`;
+
+export const NameUser = styled.View`
+  width: 150px;
+  align-items: center;
+  margin-left: 31%;
+  margin-top: 10px;
 `;
 
 export const Info = styled.View`
   width: 150px;
   align-items: center;
+  margin-left: 31%;
+  margin-top: 10px;
+`;
+
+export const InfoName = styled.Text`
+  color: #333;
+  font-weight: bold;
+  font-size: 14px;
 `;
 
 export const EditBottom = styled.Text`

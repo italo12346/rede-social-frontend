@@ -9,7 +9,7 @@ export function ProfileScreen() {
   return (
     <>
       <StatusBar barStyle={"dark-content"} backgroundColor={"#2e4374"} />
-      <Header title="Perfil" />
+
       <Profile />
       <Gallery />
     </>

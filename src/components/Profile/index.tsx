@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 import {
   View,
   Text,
@@ -15,7 +16,8 @@ import {
   Avatar,
   Name,
   Info,
-  EditBottom,
+  InfoName,
+  NameUser,
 } from "./styles";
 
 export const Profile = () => {
@@ -58,20 +60,27 @@ export const Profile = () => {
         renderItem={({ item }) => (
           <ProfileContainer>
             <Header>
-              <Avatar
-                source={{
-                  uri: `data:image/jpeg;base64,${item.fotoPerfil}`,
-                }}
-              />
-              <Info>
-                <Name>{item.publicacoes}</Name>
-                <Name>Publicações</Name>
-              </Info>
+              <TouchableOpacity>
+                <Name>@{item.usuario}</Name>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={edit}>
+                <Ionicons name="create-outline" style={{ fontSize: 35 }} />
+              </TouchableOpacity>
             </Header>
-            <Name>{item.usuario}</Name>
-            <TouchableOpacity onPress={edit}>
-              <EditBottom>Editar perfil</EditBottom>
-            </TouchableOpacity>
+            <Avatar
+              source={{
+                uri: `data:image/jpeg;base64,${item.fotoPerfil}`,
+              }}
+            />
+
+            <NameUser>
+              <Name>{item.nome}</Name>
+            </NameUser>
+            <Info>
+              <InfoName>{item.publicacoes}</InfoName>
+              <InfoName>Publicações</InfoName>
+            </Info>
           </ProfileContainer>
         )}
         refreshControl={
