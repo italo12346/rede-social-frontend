@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 import {
   View,
   Text,
@@ -8,15 +6,26 @@ import {
   FlatList,
   RefreshControl,
   TouchableOpacity,
+  Modal,
+  Image,
 } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { profile } from "../../service/api";
-import { Icons, Post, PostImage, Underline } from "./styles";
-import { Icon } from "react-native-vector-icons/Icon";
+import {
+  Icons,
+  Post,
+  PostImage,
+  Underline,
+  Container,
+  PostModal,
+} from "./styles";
 
 export const Gallery = () => {
   const [dados, setDados] = useState(null);
-
   const [refreshing, setRefreshing] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const carregarDados = useCallback(async () => {
     try {
@@ -39,6 +48,15 @@ export const Gallery = () => {
     carregarDados();
   }, [carregarDados]);
 
+  const openImageModal = (image: any) => {
+    setSelectedImage(image);
+    setIsModalVisible(true);
+  };
+
+  const closeImageModal = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <Icons>
@@ -48,19 +66,36 @@ export const Gallery = () => {
       <FlatList
         data={dados}
         numColumns={3}
-        stickyHeaderHiddenOnScroll={false}
         keyExtractor={(post) => String(post._id)}
         renderItem={({ item }) => (
-          <Post>
-            <PostImage
-              source={{ uri: `data:image/jpeg;base64,${item.imagem}` }}
-            />
-          </Post>
+          <TouchableOpacity onPress={() => openImageModal(item.imagem)}>
+            <Post>
+              <PostImage
+                source={{ uri: `data:image/jpeg;base64,${item.imagem}` }}
+              />
+            </Post>
+          </TouchableOpacity>
         )}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
+
+      <Modal visible={isModalVisible} transparent>
+        <Container>
+          <TouchableOpacity onPress={closeImageModal}>
+            <Ionicons
+              name="close"
+              size={24}
+              color="black"
+              style={{ marginLeft: 270 }}
+            />
+          </TouchableOpacity>
+          <PostModal
+            source={{ uri: `data:image/jpeg;base64,${selectedImage}` }}
+          />
+        </Container>
+      </Modal>
     </View>
   );
 };

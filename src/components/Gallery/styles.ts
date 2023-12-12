@@ -23,3 +23,15 @@ export const Underline = styled.View`
   width: 95%;
   margin: 10px;
 `;
+
+export const Container = styled.View`
+  flex: auto;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const PostModal = styled.Image`
+  border-radius: 16px;
+  width: 300px;
+  height: 300px;
+`;
