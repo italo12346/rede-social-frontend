@@ -9,10 +9,11 @@ import React from "react";
 import RegisterScreen from "../screens/RegisterScreen";
 import TabRoutes from "./tab-routes";
 import EditProfileScreen from "../screens/EditProfileScreen";
+import CreatePublishScreen from "../screens/CreatePublishScreen";
 
 
 export function StackRoutes() {
-  
+
   return (
     <Navigator>
       <Screen
@@ -39,6 +40,14 @@ export function StackRoutes() {
       <Screen
         name="editprofile"
         component={EditProfileScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Screen
+        name="createpublish"
+        component={CreatePublishScreen}
         options={{
           headerShown: false,
         }}

@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Image, ToastAndroid } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Container, Input, Button, ButtonText } from "./styles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { createPub } from "../../service/api";
+import { CameraCapturedPicture } from "expo-camera";
 
-export default function ImagePickerExample(): React.ReactElement {
+const CreatePublish: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
   const [description, setDescription] = useState("");
   const navigation = useNavigation();
+  const route = useRoute();
+
+  useEffect(() => {
+    if (route.params && (route.params as any).photo) {
+      const { photo } = route.params as any;
+      setImage(photo.uri);
+    }
+  }, [route.params]);
 
   const save = async () => {
     try {
@@ -63,7 +72,6 @@ export default function ImagePickerExample(): React.ReactElement {
       }
     }
   };
-
   return (
     <Container>
       {image && (
@@ -85,4 +93,5 @@ export default function ImagePickerExample(): React.ReactElement {
       </Button>
     </Container>
   );
-}
+};
+export default CreatePublish;
