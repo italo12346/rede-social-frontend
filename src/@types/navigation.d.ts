@@ -1,3 +1,4 @@
+declare module "@react-navigation/native"
 export declare global {
   namespace ReactNavigation {
     interface RootParamList {
@@ -6,6 +7,7 @@ export declare global {
       registro: undefined;
       profile: undefined;
       editprofile: undefined;
+      createpublish: { photo: CameraCapturedPicture | undefined };
     }
   }
 }

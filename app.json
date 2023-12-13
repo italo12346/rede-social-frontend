@@ -1,5 +1,13 @@
 {
   "expo": {
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ]
+    ],
     "name": "lenslink",
     "slug": "lenslink",
     "version": "1.0.0",
@@ -10,6 +18,8 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+
+
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
