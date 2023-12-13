@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+
 const { Screen, Navigator } = createNativeStackNavigator();
 
 import { LoginScreen } from "../screens/LoginScreen";
@@ -9,7 +10,9 @@ import RegisterScreen from "../screens/RegisterScreen";
 import TabRoutes from "./tab-routes";
 import EditProfileScreen from "../screens/EditProfileScreen";
 
+
 export function StackRoutes() {
+  
   return (
     <Navigator>
       <Screen

@@ -1,38 +1,66 @@
 import React, { useState } from "react";
-import { Image } from "react-native";
+import { Alert, Image, ToastAndroid } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Container, Input, Button, ButtonText } from "./styles";
 import { useNavigation } from "@react-navigation/native";
-import { postarFoto } from "../../service/api";
+import { createPub } from "../../service/api";
 
 export default function ImagePickerExample(): React.ReactElement {
   const [image, setImage] = useState<string | null>(null);
   const [description, setDescription] = useState("");
   const navigation = useNavigation();
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-      console.log(result.assets[0]);
-    }
-  };
 
   const save = async () => {
     try {
-      if (image) {
-        // Chama a função para enviar a foto para a API
-        await postarFoto(description, image).then(() => {
-          navigation.navigate("home");
-        });
-      }
+      const dadosAtualizados = {
+        description,
+      };
+
+      await createPub("foto/create", dadosAtualizados);
+      navigation.goBack();
     } catch (error) {
-      console.log("Não foi possível enviar a imagem:", error);
+      console.error("Erro ao enviar", error);
+    }
+  };
+
+  const handlePickerImage = async () => {
+    const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!granted) {
+      Alert.alert(
+        "Permissão necessária",
+        "Permita que sua aplicação acesse as imagens"
+      );
+    } else {
+      const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        base64: false,
+        aspect: [4, 4],
+        quality: 1,
+      });
+
+      if (canceled) {
+        ToastAndroid.show("Operação cancelada", ToastAndroid.SHORT);
+      } else {
+        setImage(assets[0].uri);
+        const filename = assets[0].uri.substring( 
+          assets[0].uri.lastIndexOf("/") + 1,
+          assets[0].uri.length
+        );
+        const extend = filename.split(".")[1];
+        const formData = new FormData();
+        formData.append(
+          "imagem",
+          JSON.parse(
+            JSON.stringify({
+              name: filename,
+              uri: assets[0].uri,
+              type: `image/${extend}`,
+            })
+          )
+        );
+        await createPub("foto/create", formData);
+      }
     }
   };
 
@@ -48,7 +76,7 @@ export default function ImagePickerExample(): React.ReactElement {
         onChangeText={setDescription}
         autoCapitalize="none"
       />
-      <Button onPress={pickImage}>
+      <Button onPress={handlePickerImage}>
         <ButtonText>Escolha uma foto</ButtonText>
       </Button>
 

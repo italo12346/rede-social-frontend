@@ -147,32 +147,29 @@ export const fazerRegistro = async (
     throw error;
   }
 };
-
-export const postarFoto = async (descricao: string, imagem: string) => {
+export const createPub = async (rota: string, dados: any) => {
   const token = await AsyncStorage.getItem("authToken");
-  try {
-    const formData = new FormData();
-    formData.append("descricao", descricao);
-    formData.append("imagem", imagem);
 
-    const response = await fetch(`${BASE_URL}/foto/create`, {
-      method: "POST",
+  if (!token) {
+    return null;
+  }
+  try {
+    const response = await axios({
+      method: "PUT",
+      url: `${BASE_URL}/${rota}/`,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization:`Bearer ${token}`,
       },
-      body: formData,
+      data: dados,
     });
 
-    if (!response.ok) {
-      console.log(response);
-
-      throw new Error("Erro ao postar a foto");
-    }
-
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
-    console.error(error);
+    if (axios.isAxiosError(error)) {
+      console.error("Erro do Axios:", error.response?.data || error.message);
+    } else {
+      console.error("Erro não relacionado ao Axios:", error);
+    }
     throw error;
   }
 };

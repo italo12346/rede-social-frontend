@@ -19,9 +19,10 @@ export const FormContainer = styled.View`
 
 export const Title = styled.Text`
   color: #000;
-  font-size: 34px;
+  font-size: 50px;
   font-weight: semibold;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  font-family:Itim_400Regular;
 `;
 
 export const Input = styled.TextInput`

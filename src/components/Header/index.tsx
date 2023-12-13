@@ -6,6 +6,7 @@ interface HeaderProps {
 }
 
 export function Header(props: HeaderProps) {
+
   return (
     <HeaderContainer>
       <HeaderText>{props.title}</HeaderText>

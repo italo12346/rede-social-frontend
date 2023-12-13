@@ -4,6 +4,8 @@ import { Feather } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CreatePublish from "../components/CreatePublish";
+import CreatePublishScreen from "../screens/CreatePublishScreen";
+import CameraPage from "../components/Cam";
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +31,7 @@ export default function TabRoutes() {
 
       <Tab.Screen
         name="Seach"
-        component={CreatePublish}
+        component={CreatePublishScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Feather name="search" color={color} size={size} />
@@ -39,7 +41,7 @@ export default function TabRoutes() {
 
       <Tab.Screen
         name="CreatePublish"
-        component={CreatePublish}
+        component={CreatePublishScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Feather name="plus-square" color={color} size={size} />
@@ -49,7 +51,7 @@ export default function TabRoutes() {
 
       <Tab.Screen
         name="camera"
-        component={CreatePublish}
+        component={CameraPage}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Feather name="camera" color={color} size={size} />
