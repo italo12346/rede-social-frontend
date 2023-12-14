@@ -11,7 +11,14 @@ const CreatePublish: React.FC = () => {
   const [descricao, setDescription] = useState("");
   const navigation = useNavigation();
   const route = useRoute();
-
+  
+  useEffect(() => {
+    if (route.params && (route.params as any).photo) {
+      const { photo } = route.params as any;
+      setImage(photo.uri);
+    }
+  }, [route.params]);
+  
   const handlePickerImage = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!granted) {

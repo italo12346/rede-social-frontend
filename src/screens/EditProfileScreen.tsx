@@ -6,7 +6,7 @@ import EditProfile from "../components/EditProfile";
 export function EditProfileScreen() {
   return (
     <>
-      <StatusBar barStyle={"dark-content"} backgroundColor={"#2e4374"} />
+      <StatusBar barStyle={"light-content"} backgroundColor={"#2e4374"} />
       <EditProfile />
     </>
   );

@@ -16,6 +16,9 @@ const CameraPage: React.FC = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
+    if (cameraRef.current) {
+      cameraRef.current.resumePreview();
+    }
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
