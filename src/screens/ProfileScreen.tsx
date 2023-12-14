@@ -8,7 +8,7 @@ import Gallery from "../components/Gallery";
 export function ProfileScreen() {
   return (
     <>
-      <StatusBar barStyle={"dark-content"} backgroundColor={"#2e4374"} />
+      <StatusBar barStyle={"light-content"} backgroundColor={"#2e4374"} />
 
       <Profile />
       <Gallery />

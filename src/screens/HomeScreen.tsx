@@ -7,7 +7,7 @@ import Feed from "../components/Feed";
 export function HomeScreen() {
   return (
     <>
-      <StatusBar barStyle={"dark-content"} backgroundColor={"#2e4374"} />
+      <StatusBar barStyle={"light-content"} backgroundColor={"#2e4374"} />
       <Header title="LensLink" />
       <Feed />
     </>

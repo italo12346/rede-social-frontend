@@ -155,10 +155,11 @@ export const createPub = async (rota: string, dados: any) => {
   }
   try {
     const response = await axios({
-      method: "PUT",
+      method: "POST",
       url: `${BASE_URL}/${rota}/`,
       headers: {
-        Authorization:`Bearer ${token}`,
+        Authorization:` Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       },
       data: dados,
     });

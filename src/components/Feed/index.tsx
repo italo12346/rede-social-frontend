@@ -27,6 +27,15 @@ export const Feed = () => {
   const carregarDados = useCallback(async () => {
     try {
       const dadosRecebidos = await fazerChamadaAutenticada("foto/list");
+  
+      // Ordenar os dados pelo campo de data (substitua 'data' pelo nome correto do campo)
+      dadosRecebidos.sort((a: { data: string }, b: { data: string }) => {
+        const dataA = new Date(a.data).getTime();
+        const dataB = new Date(b.data).getTime();
+  
+        return dataB - dataA;
+      });
+  
       setDados(dadosRecebidos);
     } catch (erro) {
       console.error("Erro ao carregar dados autenticados:", erro);
@@ -35,7 +44,6 @@ export const Feed = () => {
       setRefreshing(false);
     }
   }, []);
-
   const onRefresh = () => {
     setRefreshing(true);
     carregarDados();
