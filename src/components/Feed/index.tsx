@@ -17,8 +17,8 @@ import {
   Ellipse,
   Icons,
 } from "./styles";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons,FontAwesome5 } from "@expo/vector-icons";
+import ModalEdit from "../Modal";
 
 export const Feed = () => {
   const [dados, setDados] = useState(null);
@@ -28,7 +28,6 @@ export const Feed = () => {
     try {
       const dadosRecebidos = await fazerChamadaAutenticada("foto/list");
   
-      // Ordenar os dados pelo campo de data (substitua 'data' pelo nome correto do campo)
       dadosRecebidos.sort((a: { data: string }, b: { data: string }) => {
         const dataA = new Date(a.data).getTime();
         const dataB = new Date(b.data).getTime();
@@ -70,7 +69,7 @@ export const Feed = () => {
               <Name>{item.autor.usuario}</Name>
               <Ellipse>
                 <TouchableOpacity>
-                  <FontAwesome5 name="ellipsis-v" size={24} color="black" />
+                  <FontAwesome5 name="ellipsis-v" size={24} color="#696969" />
                 </TouchableOpacity>
               </Ellipse>
             </Header>

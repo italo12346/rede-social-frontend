@@ -9,8 +9,7 @@ import {
   Modal,
   Image,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { profile } from "../../service/api";
 import {
   Icons,
@@ -19,13 +18,21 @@ import {
   Underline,
   Container,
   PostModal,
+  Ellipse,
+  Description,
 } from "./styles";
+import EditModal from "../Modal";
+import { Name } from "../Feed/styles";
 
-export const Gallery = () => {
-  const [dados, setDados] = useState(null);
+interface GalleryProps {}
+
+export const Gallery: React.FC<GalleryProps> = () => {
+  const [dados, setDados] = useState<any[] | null>(null);
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false); // Novo estado para o modal de edição
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
 
   const carregarDados = useCallback(async () => {
     try {
@@ -48,56 +55,81 @@ export const Gallery = () => {
     carregarDados();
   }, [carregarDados]);
 
-  const openImageModal = (image: any) => {
+  const openImageModal = (image: string, item: any) => {
     setSelectedImage(image);
+    setSelectedItem(item);
     setIsModalVisible(true);
   };
 
   const closeImageModal = () => {
+    setSelectedImage(null);
+    setSelectedItem(null);
     setIsModalVisible(false);
+    setIsEditModalVisible(false); // Certifica-se de fechar o modal de edição também
+  };
+
+  const editPub = () => {
+    setIsEditModalVisible(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalVisible(false);
+  };
+
+  const renderModalContent = () => {
+    if (!selectedItem) {
+      return null;
+    }
+
+    return (
+      <Container>
+        <TouchableOpacity onPress={closeImageModal}>
+          <Ionicons
+            name="close"
+            size={25}
+            color="black"
+            style={{ marginLeft: 270, marginBottom: -22 }}
+          />
+        </TouchableOpacity>
+        <Ellipse>
+          <TouchableOpacity onPress={editPub}>
+            <FontAwesome5 name="ellipsis-v" size={22} color="black" />
+          </TouchableOpacity>
+        </Ellipse>
+        <PostModal source={{ uri: `data:image/jpeg;base64,${selectedImage}` }} />
+        <Description>
+          <Name>{selectedItem.autor.usuario}</Name> {selectedItem.descricao}
+        </Description>
+      </Container>
+    );
   };
 
   return (
     <View style={{ flex: 1 }}>
-      <Icons>
-        <Ionicons name="images-outline" size={24} color="black" />
-      </Icons>
-      <Underline />
-      <FlatList
-        data={dados}
-        numColumns={3}
-        keyExtractor={(post) => String(post._id)}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => openImageModal(item.imagem)}>
-            <Post>
-              <PostImage
-                source={{ uri: `data:image/jpeg;base64,${item.imagem}` }}
-              />
-            </Post>
-          </TouchableOpacity>
-        )}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
+    <EditModal isVisible={isEditModalVisible} onClose={closeEditModal} />
+    <Icons>
+      <Ionicons name="images-outline" size={24} color="black" />
+    </Icons>
+    <Underline />
+    <FlatList
+      data={dados}
+      numColumns={3}
+      keyExtractor={(post) => String(post._id)}
+      renderItem={({ item }) => (
+        <TouchableOpacity onPress={() => openImageModal(item.imagem, item)}>
+          <Post>
+            <PostImage source={{ uri: `data:image/jpeg;base64,${item.imagem}` }} />
+          </Post>
+        </TouchableOpacity>
+      )}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    />
 
-      <Modal visible={isModalVisible} transparent>
-        <Container>
-          <TouchableOpacity onPress={closeImageModal}>
-            <Ionicons
-              name="close"
-              size={24}
-              color="black"
-              style={{ marginLeft: 270 }}
-            />
-          </TouchableOpacity>
-          <PostModal
-            source={{ uri: `data:image/jpeg;base64,${selectedImage}` }}
-          />
-        </Container>
-      </Modal>
-    </View>
-  );
+    <Modal visible={isModalVisible} transparent>
+      {renderModalContent()}
+    </Modal>
+  </View>
+);
 };
 
 export default Gallery;
