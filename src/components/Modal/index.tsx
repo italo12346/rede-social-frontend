@@ -1,7 +1,7 @@
-
 import React, { FC, useState } from "react";
 import { View, Text, Modal, TouchableOpacity, TextInput } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { deletePub, editPub } from "../../service/api";
 import {
   Container,
   EditWindow,
@@ -13,31 +13,43 @@ import {
   DescriptionEdit,
   Salvar,
   Deletar,
-  TextButton
+  TextButton,
 } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 interface EditModalProps {
   isVisible: boolean;
   onClose: () => void;
-  description: string | null; // Modificado para garantir que seja sempre uma string
+  description: string | null;
+  imageId: string | null;
 }
 
-const EditModal: FC<EditModalProps> = ({ isVisible, onClose, description }) => {
+const EditModal: React.FC<EditModalProps> = ({
+  isVisible,
+  onClose,
+  description,
+  imageId,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState("");
+  const navigation = useNavigation();
 
-  const deletePub = () => {
-    // Implementação da lógica de deletar
+  const deletePublish = () => {
+    if (imageId) {
+      deletePub(`foto/${imageId}`);
+      console.log("Deletado com sucesso");
+      navigation.navigate("home");
+    }
   };
 
-  const editPub = () => {
+  const editImageDescription = () => {
     setEditedText(description || ""); // Inicializa com a descrição atual ou uma string vazia se for nula
     setIsEditing(true);
   };
 
   const saveChanges = () => {
-    // Implementação da lógica de salvar as alterações
     setIsEditing(false);
+    // Adicione aqui a lógica para salvar as alterações (se necessário)
   };
 
   return (
@@ -61,17 +73,17 @@ const EditModal: FC<EditModalProps> = ({ isVisible, onClose, description }) => {
                 <TextButton>Salvar</TextButton>
               </Salvar>
 
-              <Deletar onPress={saveChanges}>
+              <Deletar onPress={onClose}>
                 <TextButton>Cancelar</TextButton>
               </Deletar>
             </DescriptionEdit>
           ) : (
             <Buttons>
-              <StyledButton onPress={editPub}>
+              <StyledButton onPress={editImageDescription}>
                 <Ionicons name="pencil-outline" size={25} color="black" />
                 <ButtonText>Editar</ButtonText>
               </StyledButton>
-              <StyledButton onPress={deletePub}>
+              <StyledButton onPress={deletePublish}>
                 <Ionicons name="trash" size={25} color="black" />
                 <ButtonText>Deletar</ButtonText>
               </StyledButton>

@@ -79,7 +79,7 @@ const CreatePublish: React.FC = () => {
         setImage(null);
         setDescription("");
       }
-      navigation.goBack();
+      navigation.navigate('home')
     } catch (error) {
       console.error("Erro ao enviar", error);
     }

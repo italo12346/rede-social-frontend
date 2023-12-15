@@ -1,29 +1,35 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
-import { Camera,CameraType } from 'expo-camera';
+import { Text, View } from 'react-native';
+import { Camera, CameraType } from 'expo-camera';
 import { Feather } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import {
   CaptureButton,
   ChangeButton,
   Container,
-} from "./styles";
+} from './styles';
 
 const CameraPage: React.FC = () => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [cameraType, setCameraType] = useState( CameraType.back);
+  const [cameraType, setCameraType] = useState(CameraType.back);
   const cameraRef = useRef<Camera | null>(null);
   const navigation = useNavigation();
 
+  const requestCameraPermission = async () => {
+    const { status } = await Camera.requestCameraPermissionsAsync();
+    setHasPermission(status === 'granted');
+  };
+
   useEffect(() => {
-    if (cameraRef.current) {
-      cameraRef.current.resumePreview();
-    }
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
+    requestCameraPermission();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      cameraRef.current?._onCameraReady()
+      requestCameraPermission();
+    }, [])
+  );
 
   const handleTakePicture = async () => {
     if (cameraRef.current) {
@@ -39,9 +45,7 @@ const CameraPage: React.FC = () => {
 
   const toggleCameraType = () => {
     setCameraType(
-      cameraType === CameraType.back
-        ? CameraType.front
-        : CameraType.back
+      cameraType === CameraType.back ? CameraType.front : CameraType.back
     );
   };
 
@@ -55,7 +59,7 @@ const CameraPage: React.FC = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Camera style={{ aspectRatio:0.8, flex:1 }} type={cameraType} ref={cameraRef}>
+      <Camera style={{ aspectRatio: 0.8, flex: 1 }} type={cameraType} ref={cameraRef}>
         <Container>
           <CaptureButton onPress={handleTakePicture}>
             <Feather name="camera" size={24} color="black" />
