@@ -42,10 +42,11 @@ const CreatePublish: React.FC = () => {
       allowsEditing: true,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       base64: false,
-      aspect: [4, 4],
+      aspect: [4, 3],
       quality: 1,
     });
   };
+  
 
   const uploadImage = async (uri: string, description: string) => {
     try {

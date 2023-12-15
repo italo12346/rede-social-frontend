@@ -48,8 +48,11 @@ const EditModal: React.FC<EditModalProps> = ({
   };
 
   const saveChanges = () => {
+    console.log(imageId);
+    setEditedText(description || ""); // Garante que editedText tem o valor mais recente
+    editPub(`foto/${imageId}`, editedText); // Agora envia o valor atualizado
+    console.log("Editado com sucesso");
     setIsEditing(false);
-    // Adicione aqui a lógica para salvar as alterações (se necessário)
   };
 
   return (

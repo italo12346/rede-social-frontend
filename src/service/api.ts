@@ -174,7 +174,7 @@ export const createPub = async (rota: string, dados: any) => {
     throw error;
   }
 };
-export const editPub = async (rota: string, descricao: string, imgId:string) => {
+export const editPub = async (rota: string, descricao: string) => {
   const token = await AsyncStorage.getItem("authToken");
 
   if (!token) {
@@ -187,7 +187,7 @@ export const editPub = async (rota: string, descricao: string, imgId:string) => 
 
     const response = await axios({
       method: "PUT",
-      url: `${BASE_URL}/${rota}/${imgId}`,
+      url: `${BASE_URL}/${rota}/`,
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
