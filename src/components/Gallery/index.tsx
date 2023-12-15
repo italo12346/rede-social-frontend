@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
@@ -24,7 +25,7 @@ import {
 import EditModal from "../Modal";
 import { Name } from "../Feed/styles";
 
-interface GalleryProps {}
+interface GalleryProps{}
 
 export const Gallery: React.FC<GalleryProps> = () => {
   const [dados, setDados] = useState<any[] | null>(null);
@@ -33,6 +34,9 @@ export const Gallery: React.FC<GalleryProps> = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false); // Novo estado para o modal de edição
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
+
+  // Novo estado para a descrição do item selecionado
+  const [selectedItemDescription, setSelectedItemDescription] = useState<string | null>(null);
 
   const carregarDados = useCallback(async () => {
     try {
@@ -58,6 +62,7 @@ export const Gallery: React.FC<GalleryProps> = () => {
   const openImageModal = (image: string, item: any) => {
     setSelectedImage(image);
     setSelectedItem(item);
+    setSelectedItemDescription(item.descricao); // Atualize a descrição do item
     setIsModalVisible(true);
   };
 
@@ -65,7 +70,7 @@ export const Gallery: React.FC<GalleryProps> = () => {
     setSelectedImage(null);
     setSelectedItem(null);
     setIsModalVisible(false);
-    setIsEditModalVisible(false); // Certifica-se de fechar o modal de edição também
+    setIsEditModalVisible(false);
   };
 
   const editPub = () => {
@@ -98,7 +103,7 @@ export const Gallery: React.FC<GalleryProps> = () => {
         </Ellipse>
         <PostModal source={{ uri: `data:image/jpeg;base64,${selectedImage}` }} />
         <Description>
-          <Name>{selectedItem.autor.usuario}</Name> {selectedItem.descricao}
+          <Name>{selectedItem.autor.usuario}</Name> {selectedItemDescription}
         </Description>
       </Container>
     );
@@ -106,30 +111,34 @@ export const Gallery: React.FC<GalleryProps> = () => {
 
   return (
     <View style={{ flex: 1 }}>
-    <EditModal isVisible={isEditModalVisible} onClose={closeEditModal} />
-    <Icons>
-      <Ionicons name="images-outline" size={24} color="black" />
-    </Icons>
-    <Underline />
-    <FlatList
-      data={dados}
-      numColumns={3}
-      keyExtractor={(post) => String(post._id)}
-      renderItem={({ item }) => (
-        <TouchableOpacity onPress={() => openImageModal(item.imagem, item)}>
-          <Post>
-            <PostImage source={{ uri: `data:image/jpeg;base64,${item.imagem}` }} />
-          </Post>
-        </TouchableOpacity>
-      )}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-    />
+      <EditModal
+        description={selectedItemDescription}
+        isVisible={isEditModalVisible}
+        onClose={closeEditModal}
+      />
+      <Icons>
+        <Ionicons name="images-outline" size={24} color="black" />
+      </Icons>
+      <Underline />
+      <FlatList
+        data={dados}
+        numColumns={3}
+        keyExtractor={(post) => String(post._id)}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => openImageModal(item.imagem, item)}>
+            <Post>
+              <PostImage source={{ uri: `data:image/jpeg;base64,${item.imagem}` }} />
+            </Post>
+          </TouchableOpacity>
+        )}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      />
 
-    <Modal visible={isModalVisible} transparent>
-      {renderModalContent()}
-    </Modal>
-  </View>
-);
+      <Modal visible={isModalVisible} transparent>
+        {renderModalContent()}
+      </Modal>
+    </View>
+  );
 };
 
 export default Gallery;

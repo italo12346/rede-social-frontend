@@ -18,7 +18,6 @@ import {
   Icons,
 } from "./styles";
 import { Ionicons,FontAwesome5 } from "@expo/vector-icons";
-import ModalEdit from "../Modal";
 
 export const Feed = () => {
   const [dados, setDados] = useState(null);
