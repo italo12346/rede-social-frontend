@@ -31,7 +31,7 @@ const EditModal: React.FC<EditModalProps> = ({
   imageId,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedText, setEditedText] = useState("");
+  const [editedText, setEditedText] = useState(description || ""); // Inicializa com a descrição atual ou uma string vazia se for nula
   const navigation = useNavigation();
 
   const deletePublish = () => {
@@ -43,14 +43,12 @@ const EditModal: React.FC<EditModalProps> = ({
   };
 
   const editImageDescription = () => {
-    setEditedText(description || ""); // Inicializa com a descrição atual ou uma string vazia se for nula
     setIsEditing(true);
   };
 
   const saveChanges = () => {
     console.log(imageId);
-    setEditedText(description || ""); // Garante que editedText tem o valor mais recente
-    editPub(`foto/${imageId}`, editedText); // Agora envia o valor atualizado
+    editPub(`foto/${imageId}`, editedText);
     console.log("Editado com sucesso");
     setIsEditing(false);
   };

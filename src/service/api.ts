@@ -173,8 +173,7 @@ export const createPub = async (rota: string, dados: any) => {
     }
     throw error;
   }
-};
-export const editPub = async (rota: string, descricao: string) => {
+};export const editPub = async (rota: string, descricao: string) => {
   const token = await AsyncStorage.getItem("authToken");
 
   if (!token) {
@@ -182,17 +181,14 @@ export const editPub = async (rota: string, descricao: string) => {
   }
 
   try {
-    const formData = new FormData();
-    formData.append("descricao", descricao); // Adiciona a descrição ao FormData
-
     const response = await axios({
       method: "PUT",
-      url: `${BASE_URL}/${rota}/`,
+      url: `${BASE_URL}/${rota}`, // Removido a barra no final para permitir adicionar o ID da imagem
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json", // Alterado o Content-Type para application/json
       },
-      data: formData,
+      data: { descricao }, // Enviando a descrição dentro de um objeto
     });
 
     return response.data;
