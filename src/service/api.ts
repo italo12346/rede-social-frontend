@@ -158,7 +158,7 @@ export const createPub = async (rota: string, dados: any) => {
       method: "POST",
       url: `${BASE_URL}/${rota}/`,
       headers: {
-        Authorization:` Bearer ${token}`,
+        Authorization: ` Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       },
       data: dados,
@@ -172,5 +172,31 @@ export const createPub = async (rota: string, dados: any) => {
       console.error("Erro não relacionado ao Axios:", error);
     }
     throw error;
+  }
+};
+
+export const editPub = async (rota: string, dados: any) => {
+  const token = await AsyncStorage.getItem("authToken");
+  const userId = await AsyncStorage.getItem("userId");
+
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const response = await axios({
+      method: "PUT",
+      url: `${BASE_URL}/${rota}/${dados.f}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+      data: dados,
+    });
+
+    return response.data;
+  } catch (erro) {
+    console.error("Erro na chamada autenticada:", erro);
+    throw erro;
   }
 };

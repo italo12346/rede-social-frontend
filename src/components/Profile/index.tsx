@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons ,FontAwesome5} from "@expo/vector-icons";
 import {
   View,
   Text,
@@ -63,9 +63,8 @@ export const Profile = () => {
               <TouchableOpacity>
                 <Name>@{item.usuario}</Name>
               </TouchableOpacity>
-
               <TouchableOpacity onPress={edit}>
-                <Ionicons name="create-outline" style={{ fontSize: 35 }} />
+                <Ionicons name="create-outline" style={{ fontSize: 30 }} />
               </TouchableOpacity>
             </Header>
             <Avatar

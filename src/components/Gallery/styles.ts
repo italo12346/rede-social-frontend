@@ -35,3 +35,13 @@ export const PostModal = styled.Image`
   width: 300px;
   height: 300px;
 `;
+export const Ellipse = styled.View`
+  margin-right:238px;
+  margin-bottom:10px;
+  width:10%;
+`;
+
+export const Description = styled.Text`
+  padding: 15px;
+  line-height: 18px;
+`;

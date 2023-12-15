@@ -56,3 +56,4 @@ export const EditBottom = styled.Text`
   padding: 5px;
   margin-top: 8px;
 `;
+
