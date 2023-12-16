@@ -6,6 +6,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import CreatePublish from "../components/CreatePublish";
 import CreatePublishScreen from "../screens/CreatePublishScreen";
 import CameraPage from "../components/Cam";
+import SearchUsersScreen from "../screens/SeachUserScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +32,7 @@ export default function TabRoutes() {
 
       <Tab.Screen
         name="Seach"
-        component={CreatePublishScreen}
+        component={SearchUsersScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Feather name="search" color={color} size={size} />
