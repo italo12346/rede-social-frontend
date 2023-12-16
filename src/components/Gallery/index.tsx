@@ -34,6 +34,7 @@ export const Gallery: React.FC<GalleryProps> = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false); // Novo estado para o modal de edição
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   // Novo estado para a descrição do item selecionado
   const [selectedItemDescription, setSelectedItemDescription] = useState<string | null>(null);
@@ -62,7 +63,8 @@ export const Gallery: React.FC<GalleryProps> = () => {
   const openImageModal = (image: string, item: any) => {
     setSelectedImage(image);
     setSelectedItem(item);
-    setSelectedItemDescription(item.descricao); // Atualize a descrição do item
+    setSelectedItemDescription(item.descricao);
+    setSelectedItemId(item._id); // Adicionado o ID da imagem
     setIsModalVisible(true);
   };
 
@@ -113,6 +115,7 @@ export const Gallery: React.FC<GalleryProps> = () => {
     <View style={{ flex: 1 }}>
       <EditModal
         description={selectedItemDescription}
+        imageId={selectedItemId} // Passando o ID da imagem
         isVisible={isEditModalVisible}
         onClose={closeEditModal}
       />

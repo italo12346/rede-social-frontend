@@ -173,11 +173,8 @@ export const createPub = async (rota: string, dados: any) => {
     }
     throw error;
   }
-};
-
-export const editPub = async (rota: string, dados: any) => {
+};export const editPub = async (rota: string, descricao: string) => {
   const token = await AsyncStorage.getItem("authToken");
-  const userId = await AsyncStorage.getItem("userId");
 
   if (!token) {
     return null;
@@ -186,17 +183,44 @@ export const editPub = async (rota: string, dados: any) => {
   try {
     const response = await axios({
       method: "PUT",
-      url: `${BASE_URL}/${rota}/${dados.f}`,
+      url: `${BASE_URL}/${rota}`, // Removido a barra no final para permitir adicionar o ID da imagem
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json", // Alterado o Content-Type para application/json
       },
-      data: dados,
+      data: { descricao }, // Enviando a descrição dentro de um objeto
     });
 
     return response.data;
   } catch (erro) {
     console.error("Erro na chamada autenticada:", erro);
     throw erro;
+  }
+};
+
+export const deletePub = async (rota: string) => {
+  const token = await AsyncStorage.getItem("authToken");
+
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const response = await axios({
+      method: "DELETE",
+      url: `${BASE_URL}/${rota}/`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Erro do Axios:", error.response?.data || error.message);
+    } else {
+      console.error("Erro não relacionado ao Axios:", error);
+    }
+    throw error;
   }
 };
