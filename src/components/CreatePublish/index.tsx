@@ -42,7 +42,7 @@ const CreatePublish: React.FC = () => {
       allowsEditing: true,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       base64: false,
-      aspect: [4, 3],
+      aspect: [3, 4],
       quality: 1,
     });
   };

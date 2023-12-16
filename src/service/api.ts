@@ -224,3 +224,31 @@ export const deletePub = async (rota: string) => {
     throw error;
   }
 };
+
+export const getUserByName = async (nomeUsuario: string): Promise<any | null> => {
+  const token = await AsyncStorage.getItem("authToken");
+
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${BASE_URL}/user/${nomeUsuario}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (erro) {
+    if (axios.isAxiosError(erro) && erro.response?.status === 404) {
+      console.error('Usuário não encontrado:', erro.response?.data || erro.message);
+      return null;
+    } else {
+      console.error('Erro ao buscar usuários:', erro);
+      throw erro;
+    }
+  }
+};
