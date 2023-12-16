@@ -1,39 +1,35 @@
 import React, { useEffect, useState, useCallback } from "react";
-import {
-  View,
-  Alert,
-  FlatList,
-  RefreshControl,
-  TouchableOpacity,
-} from "react-native";
+import { View, Alert, FlatList, RefreshControl } from "react-native";
 import { fazerChamadaAutenticada } from "../../service/api";
-import {
-  Post,
-  Header,
-  Avatar,
-  Name,
-  PostImage,
-  Description,
-  Ellipse,
-  Icons,
-} from "./styles";
-import { Ionicons,FontAwesome5 } from "@expo/vector-icons";
+import { Post, Header, Avatar, Name, PostImage, Description } from "./styles";
 
-export const Feed = () => {
-  const [dados, setDados] = useState(null);
+interface DadosItem {
+  _id: string;
+  autor: {
+    fotoPerfil: string;
+    usuario: string;
+  };
+  imagem: string;
+  data: string;
+  descricao: string;
+}
+
+export const Feed: React.FC = () => {
+  const [dados, setDados] = useState<DadosItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [visibleItems, setVisibleItems] = useState(5);
 
   const carregarDados = useCallback(async () => {
     try {
       const dadosRecebidos = await fazerChamadaAutenticada("foto/list");
-  
+
       dadosRecebidos.sort((a: { data: string }, b: { data: string }) => {
         const dataA = new Date(a.data).getTime();
         const dataB = new Date(b.data).getTime();
-  
+
         return dataB - dataA;
       });
-  
+
       setDados(dadosRecebidos);
     } catch (erro) {
       console.error("Erro ao carregar dados autenticados:", erro);
@@ -42,9 +38,16 @@ export const Feed = () => {
       setRefreshing(false);
     }
   }, []);
+
   const onRefresh = () => {
     setRefreshing(true);
     carregarDados();
+  };
+
+  const handleEndReached = () => {
+    if (visibleItems < dados.length) {
+      setVisibleItems(visibleItems + 5);
+    }
   };
 
   useEffect(() => {
@@ -55,7 +58,8 @@ export const Feed = () => {
     <View style={{ flex: 1 }}>
       <FlatList
         onEndReachedThreshold={0.1}
-        data={dados}
+        onEndReached={handleEndReached}
+        data={dados.slice(0, visibleItems)}
         keyExtractor={(post) => String(post._id)}
         renderItem={({ item }) => (
           <Post>
@@ -66,20 +70,11 @@ export const Feed = () => {
                 }}
               />
               <Name>{item.autor.usuario}</Name>
-              <Ellipse>
-                <TouchableOpacity>
-                  <FontAwesome5 name="ellipsis-v" size={24} color="#696969" />
-                </TouchableOpacity>
-              </Ellipse>
             </Header>
 
             <PostImage
               source={{ uri: `data:image/jpeg;base64,${item.imagem}` }}
             />
-            <Icons>
-              <Ionicons name="ios-heart-outline" size={24} color="black" />
-              <Ionicons name="md-chatbubble-outline" size={24} color="black" />
-            </Icons>
             <Description>
               <Name>{item.autor.usuario}</Name> {item.descricao}
             </Description>
