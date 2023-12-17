@@ -14,7 +14,7 @@ interface DadosItem {
   descricao: string;
 }
 
-export const Feed: React.FC = () => {
+export const Feed = () => {
   const [dados, setDados] = useState<DadosItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [visibleItems, setVisibleItems] = useState(5);
