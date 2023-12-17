@@ -11,7 +11,6 @@ export function OtherProfileScreen() {
     <>
       <StatusBar barStyle={"light-content"} backgroundColor={"#2e4374"} />
       <OtherProfile />
-      <TabRoutes/>
     </>
   );
 }
