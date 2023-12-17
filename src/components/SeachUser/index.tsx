@@ -1,75 +1,73 @@
-import React, { useState, useEffect, FC } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  ListRenderItem,
-} from 'react-native';
+import React, { useState } from "react";
+import { View, Text, TextInput, FlatList, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { getUserByName } from "../../service/api";
+import { Button, Container, Input, ButtonText, ItemContainer, Avatar, UserName, Busca } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
-import {Container, Input,HeaderText,EmptyListText,UserItem} from './styles'
-import { getUserByName } from '../../service/api'; // Importe a função getUserByName
-
-interface User {
+interface UsuarioItem {
   _id: string;
-  nome: string;
   usuario: string;
+  fotoPerfil: string;
 }
 
-const SearchUsers: FC = () => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<User[]>([]);
+const SearchUser: React.FC = () => {
+  const [nomeUsuario, setNomeUsuario] = useState<string>("");
+  const [resultados, setResultados] = useState<UsuarioItem[]>([]);
 
-  useEffect(() => {
-    // Função para buscar usuários pelo nome
-    const searchUsers = async () => {
-      try {
-        if (searchTerm.trim() !== '') {
-          const result: User | null = await getUserByName(searchTerm);
+  const SearchUser = async () => {
+    try {
+      const data = await getUserByName(nomeUsuario);
 
-          if (result !== null) {
-            setSearchResults([result]);
-          } else {
-            setSearchResults([]);
-          }
-        } else {
-          setSearchResults([]);
-        }
-      } catch (error) {
-        console.error('Erro ao buscar usuários:', error);
+      if (data) {
+        setResultados(data);
+      } else {
+        setResultados([]);
       }
-    };
+    } catch (erro) {
+      console.error("Erro ao buscar usuário:", erro);
+    }
+  };
 
-    searchUsers();
-  }, [searchTerm]);
+  const navigation = useNavigation();
 
-  const renderItem: ListRenderItem<User> = ({ item }) => (
-    <UserItem>
-      <Text>{item.nome}</Text>
-      <Text>{item.usuario}</Text>
-      {/* Adicione mais informações conforme necessário */}
-    </UserItem>
+  const renderItem = ({ item }: { item: UsuarioItem }) => (
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("OtherProfile", {
+          userId: item._id,
+        })
+      }
+    >
+      <ItemContainer>
+        <Avatar
+          source={{
+            uri: `data:image/jpeg;base64,${item.fotoPerfil}`,
+          }}
+        />
+        <UserName>{item.usuario}</UserName>
+      </ItemContainer>
+    </TouchableOpacity>
   );
 
   return (
     <Container>
-      <Input
-        placeholder="Digite o nome de usuário"
-        value={searchTerm}
-        onChangeText={(text) => setSearchTerm(text)}
-      />
+      <Busca>
+        <Input
+          placeholder="Digite o nome do usuário"
+          value={nomeUsuario}
+          onChangeText={(text) => setNomeUsuario(text)}
+        />
+        <Button onPress={SearchUser}>
+          <ButtonText>Buscar</ButtonText>
+        </Button>
+      </Busca>
       <FlatList
-        data={searchResults}
-        renderItem={renderItem}
+        data={resultados}
         keyExtractor={(item) => item._id}
-        ListHeaderComponent={<HeaderText>Resultados:</HeaderText>}
-        ListEmptyComponent={
-          <EmptyListText>Nenhum usuário encontrado</EmptyListText>
-        }
+        renderItem={renderItem}
       />
     </Container>
   );
 };
-export default SearchUsers;
+
+export default SearchUser;

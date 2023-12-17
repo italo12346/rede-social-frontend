@@ -8,6 +8,7 @@ export declare global {
       profile: undefined;
       editprofile: undefined;
       createpublish: { photo: CameraCapturedPicture | undefined };
+      OtherProfile: { userId: string }; 
     }
   }
 }

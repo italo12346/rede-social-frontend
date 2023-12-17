@@ -86,6 +86,30 @@ export const profile = async (rota: string, metodo = "GET", dados = {}) => {
   }
 };
 
+
+export const otherProfile = async (rota: string,userId:string, metodo = "GET", dados = {}) => {
+  const token = await AsyncStorage.getItem("authToken");
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const response = await axios({
+      method: metodo,
+      url: `${BASE_URL}/${rota}/${userId}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: dados,
+    });
+
+    return response.data;
+  } catch (erro) {
+    console.error("Erro na chamada autenticada:", erro);
+    throw erro;
+  }
+};
+
 export const editProfile = async (rota: string, dados: any) => {
   const token = await AsyncStorage.getItem("authToken");
   const userId = await AsyncStorage.getItem("userId");
@@ -226,7 +250,7 @@ export const deletePub = async (rota: string) => {
 };
 
 export const getUserByName = async (nomeUsuario: string): Promise<any | null> => {
-  const token = await AsyncStorage.getItem("authToken");
+  const token = await AsyncStorage.getItem('authToken');
 
   if (!token) {
     return null;
@@ -234,8 +258,8 @@ export const getUserByName = async (nomeUsuario: string): Promise<any | null> =>
 
   try {
     const response = await axios({
-      method: "GET",
-      url: `${BASE_URL}/user/${nomeUsuario}`,
+      method: 'GET',
+      url: `${BASE_URL}/user/search/${nomeUsuario}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -247,7 +271,7 @@ export const getUserByName = async (nomeUsuario: string): Promise<any | null> =>
       console.error('Usuário não encontrado:', erro.response?.data || erro.message);
       return null;
     } else {
-      console.error('Erro ao buscar usuários:', erro);
+      console.error('Erro ao buscar usuários pelo nome:', erro);
       throw erro;
     }
   }

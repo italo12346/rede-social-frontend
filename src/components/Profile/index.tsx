@@ -30,6 +30,7 @@ export const Profile = () => {
   const carregarDados = useCallback(async () => {
     try {
       const dadosRecebidos = await profile("user");
+      
       setDados([dadosRecebidos]);
     } catch (erro) {
       console.error("Erro ao carregar dados autenticados:", erro);
