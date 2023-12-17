@@ -24,7 +24,7 @@ import {
 import EditModal from "../Modal";
 import { Name } from "../Feed/styles";
 
-interface GalleryProps {}
+interface GalleryProps { }
 
 export const Gallery: React.FC<GalleryProps> = () => {
   const [dados, setDados] = useState<any[] | null>(null);
@@ -34,10 +34,7 @@ export const Gallery: React.FC<GalleryProps> = () => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-
-  const [selectedItemDescription, setSelectedItemDescription] = useState<
-    string | null
-  >(null);
+  const [selectedItemDescription, setSelectedItemDescription] = useState<string | null>(null);
 
   const carregarDados = useCallback(async () => {
     try {
@@ -107,7 +104,7 @@ export const Gallery: React.FC<GalleryProps> = () => {
           source={{ uri: `data:image/jpeg;base64,${selectedImage}` }}
         />
         <Description>
-          <Name>{selectedItem.autor.usuario}</Name> {selectedItemDescription}
+          <Name>{selectedItem.autor.usuario} : </Name> {selectedItemDescription}
         </Description>
       </Container>
     );

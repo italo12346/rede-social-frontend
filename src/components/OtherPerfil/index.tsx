@@ -26,6 +26,7 @@ import {
   Container,
   Ellipse,
   PostModal,
+  Description,
 } from "./styles";
 
 interface UsuarioItem {
@@ -50,6 +51,7 @@ const OtherProfile: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const [selectedItemDescription, setSelectedItemDescription] = useState<string | null>(null);
 
   const navigation = useNavigation();
   const route = useRoute<OtherProfileRouteProp>();
@@ -87,6 +89,7 @@ const OtherProfile: React.FC = () => {
   const openImageModal = (image: string, item: any) => {
     setSelectedImage(image);
     setSelectedItem(item);
+    setSelectedItemDescription(item.descricao);
     setIsModalVisible(true);
   };
 
@@ -118,6 +121,9 @@ const OtherProfile: React.FC = () => {
         <PostModal
           source={{ uri: `data:image/jpeg;base64,${selectedImage}` }}
         />
+         <Description>
+          <Name>{selectedItem.autor.usuario} : </Name> {selectedItemDescription}
+        </Description>
       </Container>
     );
   };
@@ -169,7 +175,7 @@ const OtherProfile: React.FC = () => {
           <TouchableOpacity onPress={() => openImageModal(item.imagem, item)}>
             <Post>
               <PostImage
-                source={{ uri: `data:image/jpeg;base64,${item.imagem}` }}
+                source={{ uri: `data:image/jpeg;base64,${item.imagem}` }} 
               />
             </Post>
           </TouchableOpacity>

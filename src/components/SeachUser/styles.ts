@@ -24,12 +24,14 @@ margin-top: 8px;
 
 export const Button = styled.TouchableOpacity`
         height: 50px;
-        padding: 16px;
+        padding: 10px;
         borderBottomWidth: 1px;
         borderBottomColor: #ccc;
         background-color: #2e4374;
         border-radius: 14px;
         margin:6px;
+        justify-content: center;
+        align-items: center;
 `;
 
 export const HeaderText = styled.Text`
@@ -42,6 +44,7 @@ export const HeaderText = styled.Text`
 export const ButtonText = styled.Text`
 color: #ffffff;
 fontWeight: bold;
+
 `;
 
 export const Avatar = styled.Image`
@@ -54,7 +57,8 @@ marginRight: 10px;
 
 export const ItemContainer = styled.View`
 flexDirection: row;
-padding: 10px;
+padding-top:10px;
+padding-bottom:10px;
 borderBottomWidth: 1px;
 borderColor: #ecf0f1;
 align-items: center;
