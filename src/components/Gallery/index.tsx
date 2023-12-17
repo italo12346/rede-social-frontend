@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
@@ -25,19 +24,20 @@ import {
 import EditModal from "../Modal";
 import { Name } from "../Feed/styles";
 
-interface GalleryProps{}
+interface GalleryProps {}
 
 export const Gallery: React.FC<GalleryProps> = () => {
   const [dados, setDados] = useState<any[] | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false); // Novo estado para o modal de edição
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
-  // Novo estado para a descrição do item selecionado
-  const [selectedItemDescription, setSelectedItemDescription] = useState<string | null>(null);
+  const [selectedItemDescription, setSelectedItemDescription] = useState<
+    string | null
+  >(null);
 
   const carregarDados = useCallback(async () => {
     try {
@@ -64,7 +64,7 @@ export const Gallery: React.FC<GalleryProps> = () => {
     setSelectedImage(image);
     setSelectedItem(item);
     setSelectedItemDescription(item.descricao);
-    setSelectedItemId(item._id); // Adicionado o ID da imagem
+    setSelectedItemId(item._id);
     setIsModalVisible(true);
   };
 
@@ -103,7 +103,9 @@ export const Gallery: React.FC<GalleryProps> = () => {
             <FontAwesome5 name="ellipsis-v" size={22} color="black" />
           </TouchableOpacity>
         </Ellipse>
-        <PostModal source={{ uri: `data:image/jpeg;base64,${selectedImage}` }} />
+        <PostModal
+          source={{ uri: `data:image/jpeg;base64,${selectedImage}` }}
+        />
         <Description>
           <Name>{selectedItem.autor.usuario}</Name> {selectedItemDescription}
         </Description>
@@ -115,7 +117,7 @@ export const Gallery: React.FC<GalleryProps> = () => {
     <View style={{ flex: 1 }}>
       <EditModal
         description={selectedItemDescription}
-        imageId={selectedItemId} // Passando o ID da imagem
+        imageId={selectedItemId}
         isVisible={isEditModalVisible}
         onClose={closeEditModal}
       />
@@ -130,11 +132,15 @@ export const Gallery: React.FC<GalleryProps> = () => {
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => openImageModal(item.imagem, item)}>
             <Post>
-              <PostImage source={{ uri: `data:image/jpeg;base64,${item.imagem}` }} />
+              <PostImage
+                source={{ uri: `data:image/jpeg;base64,${item.imagem}` }}
+              />
             </Post>
           </TouchableOpacity>
         )}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
 
       <Modal visible={isModalVisible} transparent>

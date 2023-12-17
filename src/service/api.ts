@@ -86,8 +86,12 @@ export const profile = async (rota: string, metodo = "GET", dados = {}) => {
   }
 };
 
-
-export const otherProfile = async (rota: string,userId:string, metodo = "GET", dados = {}) => {
+export const otherProfile = async (
+  rota: string,
+  userId: string,
+  metodo = "GET",
+  dados = {}
+) => {
   const token = await AsyncStorage.getItem("authToken");
   if (!token) {
     return null;
@@ -197,7 +201,8 @@ export const createPub = async (rota: string, dados: any) => {
     }
     throw error;
   }
-};export const editPub = async (rota: string, descricao: string) => {
+};
+export const editPub = async (rota: string, descricao: string) => {
   const token = await AsyncStorage.getItem("authToken");
 
   if (!token) {
@@ -249,8 +254,10 @@ export const deletePub = async (rota: string) => {
   }
 };
 
-export const getUserByName = async (nomeUsuario: string): Promise<any | null> => {
-  const token = await AsyncStorage.getItem('authToken');
+export const getUserByName = async (
+  nomeUsuario: string
+): Promise<any | null> => {
+  const token = await AsyncStorage.getItem("authToken");
 
   if (!token) {
     return null;
@@ -258,7 +265,7 @@ export const getUserByName = async (nomeUsuario: string): Promise<any | null> =>
 
   try {
     const response = await axios({
-      method: 'GET',
+      method: "GET",
       url: `${BASE_URL}/user/search/${nomeUsuario}`,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -268,10 +275,13 @@ export const getUserByName = async (nomeUsuario: string): Promise<any | null> =>
     return response.data;
   } catch (erro) {
     if (axios.isAxiosError(erro) && erro.response?.status === 404) {
-      console.error('Usuário não encontrado:', erro.response?.data || erro.message);
+      console.error(
+        "Usuário não encontrado:",
+        erro.response?.data || erro.message
+      );
       return null;
     } else {
-      console.error('Erro ao buscar usuários pelo nome:', erro);
+      console.error("Erro ao buscar usuários pelo nome:", erro);
       throw erro;
     }
   }
