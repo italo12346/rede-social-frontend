@@ -1,9 +1,32 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { View, Text, Alert, FlatList, RefreshControl, TouchableOpacity } from "react-native";
-import { otherProfile } from "../../service/api";
-import { ProfileContainer, Header, Avatar, Name, Info, InfoName, NameUser } from "./styles";
+import {
+  View,
+  Text,
+  Alert,
+  FlatList,
+  RefreshControl,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
+import { otherProfile, profile } from "../../service/api";
+import {
+  ProfileContainer,
+  Header,
+  Avatar,
+  Name,
+  Info,
+  InfoName,
+  NameUser,
+  Icons,
+  Underline,
+  Post,
+  PostImage,
+  Container,
+  Ellipse,
+  PostModal,
+} from "./styles";
 
 interface UsuarioItem {
   _id: string;
@@ -23,6 +46,10 @@ type OtherProfileRouteProp = RouteProp<RootStackParamList, "OtherProfile">;
 const OtherProfile: React.FC = () => {
   const [dados, setDados] = useState<UsuarioItem[] | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [gallery, setGallery] = useState<any[] | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
 
   const navigation = useNavigation();
   const route = useRoute<OtherProfileRouteProp>();
@@ -40,18 +67,60 @@ const OtherProfile: React.FC = () => {
     }
   }, [userId]);
 
+  const carregarGaleria = useCallback(async () => {
+    try {
+      const dadosRecebidos = await otherProfile("foto/userfotos", userId);
+      setGallery(dadosRecebidos);
+    } catch (erro) {
+      console.error("Erro ao carregar dados autenticados:", erro);
+      Alert.alert("Erro", "Não foi possível carregar os dados autenticados.");
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
   const onRefresh = () => {
     setRefreshing(true);
     carregarDados();
   };
 
-  const edit = () => {
-    navigation.navigate("editprofile");
+  const openImageModal = (image: string, item: any) => {
+    setSelectedImage(image);
+    setSelectedItem(item);
+    setIsModalVisible(true);
   };
 
   useEffect(() => {
-    carregarDados();
-  }, [carregarDados]);
+    carregarDados(), carregarGaleria();
+  }, [carregarDados, carregarGaleria]);
+
+  const closeImageModal = () => {
+    setSelectedImage(null);
+    setSelectedItem(null);
+    setIsModalVisible(false);
+  };
+
+  const renderModalContent = () => {
+    if (!selectedItem) {
+      return null;
+    }
+
+    return (
+      <Container>
+        <TouchableOpacity onPress={closeImageModal}>
+          <Ionicons
+            name="close"
+            size={25}
+            color="black"
+            style={{ marginLeft: 270 }}
+          />
+        </TouchableOpacity>
+        <PostModal
+          source={{ uri: `data:image/jpeg;base64,${selectedImage}` }}
+        />
+      </Container>
+    );
+  };
 
   return (
     <View>
@@ -64,8 +133,8 @@ const OtherProfile: React.FC = () => {
               <TouchableOpacity>
                 <Name>@{item.usuario}</Name>
               </TouchableOpacity>
-              <TouchableOpacity onPress={edit}>
-                <Ionicons name="create-outline" style={{ fontSize: 30 }} />
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name="close" style={{ fontSize: 30 }} />
               </TouchableOpacity>
             </Header>
             <Avatar
@@ -73,6 +142,7 @@ const OtherProfile: React.FC = () => {
                 uri: `data:image/jpeg;base64,${item.fotoPerfil}`,
               }}
             />
+
             <NameUser>
               <Name>{item.nome}</Name>
             </NameUser>
@@ -86,6 +156,31 @@ const OtherProfile: React.FC = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
+
+      <Icons>
+        <Ionicons name="images-outline" size={24} color="black" />
+      </Icons>
+      <Underline />
+      <FlatList
+        data={gallery}
+        numColumns={3}
+        keyExtractor={(post) => String(post._id)}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => openImageModal(item.imagem, item)}>
+            <Post>
+              <PostImage
+                source={{ uri: `data:image/jpeg;base64,${item.imagem}` }}
+              />
+            </Post>
+          </TouchableOpacity>
+        )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      />
+      <Modal visible={isModalVisible} transparent>
+        {renderModalContent()}
+      </Modal>
     </View>
   );
 };
